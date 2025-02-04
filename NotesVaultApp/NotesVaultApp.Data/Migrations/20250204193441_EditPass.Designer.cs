@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NotesVaultApp.Data;
 
@@ -10,9 +11,11 @@ using NotesVaultApp.Data;
 namespace NotesVaultApp.Data.Migrations
 {
     [DbContext(typeof(NotesVaultDbContext))]
-    partial class NotesVaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250204193441_EditPass")]
+    partial class EditPass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
