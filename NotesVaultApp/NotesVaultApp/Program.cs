@@ -48,6 +48,7 @@ namespace NotesVaultApp
             });
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddAuthorization();
             var app = builder.Build();

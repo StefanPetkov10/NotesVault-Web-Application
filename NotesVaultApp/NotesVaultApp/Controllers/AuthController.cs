@@ -1,9 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using NotesVaultApp.Data;
 using NotesVaultApp.Data.Models;
 using NotesVaultApp.DTOs;
@@ -16,14 +12,14 @@ namespace NotesVaultApp.Controllers
     public class AuthController : ControllerBase
     {
         private readonly NotesVaultDbContext _context;
-        private readonly IConfiguration _config;
         private readonly IAuthService _authService;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(NotesVaultDbContext context, IConfiguration config, IAuthService authService)
+        public AuthController(NotesVaultDbContext context, IAuthService authService, ITokenService tokenService)
         {
             _context = context;
-            _config = config;
             _authService = authService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -51,24 +47,8 @@ namespace NotesVaultApp.Controllers
             if (user == null || !_authService.VerifyPassword(dto.Password, user.PasswordHash))
                 return Unauthorized("Invalid credentials!");
 
-            // Генериране на JWT токен
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_config["JwtConfig:Key"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                            new Claim(ClaimTypes.Name, user.Username),
-                            new Claim(ClaimTypes.Email, user.Email)
-                        }),
-                Expires = DateTime.UtcNow.AddDays(_config.GetValue<int>("JwtConfig:ExpireDays")),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return Ok(new { token = tokenHandler.WriteToken(token) });
+            var token = _tokenService.GenerateToken(user);
+            return Ok(new { token });
         }
     }
 }
