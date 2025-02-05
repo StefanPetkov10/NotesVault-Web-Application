@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using NotesVaultApp.Data;
 using NotesVaultApp.Service.Data;
 using NotesVaultApp.Service.Data.Interfaces;
+using NotesVaultApp.Web.Infrastucture.Extensions;
 
 namespace NotesVaultApp
 {
@@ -47,8 +48,8 @@ namespace NotesVaultApp
                 };
             });
 
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.RegisterRepositories(typeof(AuthService).Assembly);
+            builder.Services.RegisterUserDefinedServices(typeof(IAuthService).Assembly);
 
             builder.Services.AddAuthorization();
             var app = builder.Build();

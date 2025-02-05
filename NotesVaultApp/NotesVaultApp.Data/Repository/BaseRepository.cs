@@ -4,12 +4,12 @@ using NotesVaultApp.Data.Repository.Interface;
 
 namespace NotesVaultApp.Data.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IRepository<T> where T : class
     {
         protected readonly NotesVaultDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public Repository(NotesVaultDbContext context)
+        public BaseRepository(NotesVaultDbContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();

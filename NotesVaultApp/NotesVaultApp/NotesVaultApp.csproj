@@ -19,6 +19,7 @@
     <ProjectReference Include="..\NotesVaultApp.Data.Models\NotesVaultApp.Data.Models.csproj" />
     <ProjectReference Include="..\NotesVaultApp.Data\NotesVaultApp.Data.csproj" />
     <ProjectReference Include="..\NotesVaultApp.Service.Data\NotesVaultApp.Service.Data.csproj" />
+    <ProjectReference Include="..\NotesVaultApp.Web.Infrastucture\NotesVaultApp.Web.Infrastucture.csproj" />
   </ItemGroup>
 
 </Project>
