@@ -15,6 +15,8 @@ namespace NotesVaultApp.Data.Repository
             _dbSet = context.Set<T>();
         }
 
+        public IQueryable<T> GetAllAttached() => this._dbSet.AsQueryable();
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();

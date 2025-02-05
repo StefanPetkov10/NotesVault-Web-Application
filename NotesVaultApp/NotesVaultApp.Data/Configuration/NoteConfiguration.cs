@@ -17,17 +17,11 @@ namespace NotesVaultApp.Data.Configuration
             builder.Property(n => n.Content)
                 .IsRequired();
 
-            builder.HasKey(n => new { n.CategoryId, n.UserId });
-
             builder
                 .HasOne(n => n.Category)
                 .WithMany(c => c.Notes)
                 .HasForeignKey(n => n.CategoryId);
 
-            builder
-                .HasOne(n => n.User)
-                .WithMany(u => u.Notes)
-                .HasForeignKey(n => n.UserId);
 
             builder
                 .HasData
@@ -38,8 +32,8 @@ namespace NotesVaultApp.Data.Configuration
                         Title = "First Note",
                         Content = "This is the content of the first note",
                         CreatedAt = "04-02-2025",
+                        UpdatedAt = "05-02-2025",
                         CategoryId = 1,
-                        UserId = 1
                     },
                     new Note
                     {
@@ -48,7 +42,6 @@ namespace NotesVaultApp.Data.Configuration
                         Content = "This is the content of the second note",
                         CreatedAt = "05-02-2025",
                         CategoryId = 2,
-                        UserId = 1
                     },
                     new Note
                     {
@@ -57,7 +50,6 @@ namespace NotesVaultApp.Data.Configuration
                         Content = "This is the content of the third note",
                         CreatedAt = "06-02-2025",
                         CategoryId = 3,
-                        UserId = 1
                     }
                 );
         }

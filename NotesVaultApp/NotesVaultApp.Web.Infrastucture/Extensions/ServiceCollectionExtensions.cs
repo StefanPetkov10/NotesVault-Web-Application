@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using NotesVaultApp.Data.Models;
 using NotesVaultApp.Data.Repository;
 using NotesVaultApp.Data.Repository.Interface;
 
@@ -10,7 +9,6 @@ namespace NotesVaultApp.Web.Infrastucture.Extensions
     {
         public static void RegisterRepositories(this IServiceCollection services, Assembly modelsAssembly)
         {
-            Type[] typesToExclude = new Type[] { typeof(ApplicationUser) };
             Type[] modelTypes = modelsAssembly
                 .GetTypes()
                 .Where(t => !t.IsAbstract && !t.IsInterface &&
@@ -20,19 +18,18 @@ namespace NotesVaultApp.Web.Infrastucture.Extensions
 
             foreach (Type type in modelTypes)
             {
-                if (!typesToExclude.Contains(type))
-                {
-                    // IRepository<T> and BaseRepository<T> both expect just one type parameter
-                    Type repositoryInterface = typeof(IRepository<>);
-                    Type repositoryInstanceType = typeof(BaseRepository<>);
 
-                    // Register IRepository<T> with BaseRepository<T> for each model
-                    Type constructedInterface = repositoryInterface.MakeGenericType(type); // IRepository<Note>
-                    Type constructedImplementation = repositoryInstanceType.MakeGenericType(type); // BaseRepository<Note>
+                // IRepository<T> and BaseRepository<T> both expect just one type parameter
+                Type repositoryInterface = typeof(IRepository<>);
+                Type repositoryInstanceType = typeof(BaseRepository<>);
 
-                    // Register the service in DI container
-                    services.AddScoped(constructedInterface, constructedImplementation);
-                }
+                // Register IRepository<T> with BaseRepository<T> for each model
+                Type constructedInterface = repositoryInterface.MakeGenericType(type); // IRepository<Note>
+                Type constructedImplementation = repositoryInstanceType.MakeGenericType(type); // BaseRepository<Note>
+
+                // Register the service in DI container
+                services.AddScoped(constructedInterface, constructedImplementation);
+
             }
         }
 

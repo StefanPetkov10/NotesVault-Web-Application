@@ -21,49 +21,6 @@ namespace NotesVaultApp.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("NotesVaultApp.Data.Models.ApplicationUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "stefan08@gmail.com",
-                            PasswordHash = "hjr5Qup2sbDpHJZQPphQlQ==:hRWH22x1dUOsEWfhJym3GbR/J70mfTlKfMvd9QkmvUE=",
-                            Username = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "user1@gmail.com",
-                            PasswordHash = "uIoxwBljgW/sv4kFGdxqnQ==:ZedA9qMNufYt8B2u7pthHF5UwWiVFuh4jGaK7hFuZRo=",
-                            Username = "user1"
-                        });
-                });
-
             modelBuilder.Entity("NotesVaultApp.Data.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -100,10 +57,13 @@ namespace NotesVaultApp.Data.Migrations
 
             modelBuilder.Entity("NotesVaultApp.Data.Models.Note", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -114,46 +74,44 @@ namespace NotesVaultApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("CategoryId", "UserId");
+                    b.Property<string>("UpdatedAt")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Notes");
 
                     b.HasData(
                         new
                         {
+                            Id = 1,
                             CategoryId = 1,
-                            UserId = 1,
                             Content = "This is the content of the first note",
                             CreatedAt = "04-02-2025",
-                            Id = 1,
-                            Title = "First Note"
+                            Title = "First Note",
+                            UpdatedAt = "05-02-2025"
                         },
                         new
                         {
+                            Id = 2,
                             CategoryId = 2,
-                            UserId = 1,
                             Content = "This is the content of the second note",
                             CreatedAt = "05-02-2025",
-                            Id = 2,
                             Title = "Second Note"
                         },
                         new
                         {
+                            Id = 3,
                             CategoryId = 3,
-                            UserId = 1,
                             Content = "This is the content of the third note",
                             CreatedAt = "06-02-2025",
-                            Id = 3,
                             Title = "Third Note"
                         });
                 });
@@ -166,20 +124,7 @@ namespace NotesVaultApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NotesVaultApp.Data.Models.ApplicationUser", "User")
-                        .WithMany("Notes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NotesVaultApp.Data.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Notes");
                 });
 
             modelBuilder.Entity("NotesVaultApp.Data.Models.Category", b =>

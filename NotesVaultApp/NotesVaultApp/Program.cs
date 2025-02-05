@@ -1,10 +1,7 @@
-
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using NotesVaultApp.Data;
 using NotesVaultApp.Data.Models;
+using NotesVaultApp.DTOs.Note_DTOs.Mappings;
 using NotesVaultApp.Service.Data.Interfaces;
 using NotesVaultApp.Web.Infrastucture.Extensions;
 
@@ -26,36 +23,17 @@ namespace NotesVaultApp
             builder.Services.AddSwaggerGen();
 
 
-
-            builder.Services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = builder.Configuration["JwtConfig:Issuer"],
-                    ValidAudience = builder.Configuration["JwtConfig:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Key"])),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
-                };
-            });
-
             //builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             //builder.Services.AddScoped<ITokenService, TokenService>();
             //builder.Services.AddScoped<IAuthService, AuthService>();
             //builder.Services.AddScoped<INoteService, NoteService>();
 
             //builder.Services.AddScoped<IRepository<Note>, BaseRepository<Note>>();
-            builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
+            builder.Services.RegisterRepositories(typeof(Note).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(INoteService).Assembly);
+            builder.Services.AddAutoMapper(typeof(NoteProfile).Assembly);
+
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddAuthorization();
             var app = builder.Build();
@@ -72,10 +50,10 @@ namespace NotesVaultApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
         }
     }
+
 }

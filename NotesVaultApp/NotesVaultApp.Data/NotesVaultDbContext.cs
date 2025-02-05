@@ -9,13 +9,11 @@ namespace NotesVaultApp.Data
             : base(options)
         {
         }
-        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new Configuration.ApplicationUserConfiguration());
             modelBuilder.ApplyConfiguration(new Configuration.CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new Configuration.NoteConfiguration());
         }

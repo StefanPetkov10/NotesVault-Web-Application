@@ -1,4 +1,5 @@
-﻿using NotesVaultApp.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using NotesVaultApp.Data.Models;
 using NotesVaultApp.Data.Repository.Interface;
 using NotesVaultApp.Service.Data.Interfaces;
 
@@ -15,12 +16,17 @@ namespace NotesVaultApp.Service.Data
 
         public async Task<IEnumerable<Note>> GetAllNotesAsync()
         {
-            return await _noteRepository.GetAllAsync();
+            return await _noteRepository.GetAllAttached()
+                .Include(n => n.Category)
+                .ToArrayAsync();
         }
 
         public async Task<Note?> GetNoteByIdAsync(int id)
         {
-            return await _noteRepository.GetByIdAsync(id);
+            //return await _noteRepository.GetByIdAsync(id);
+            return await _noteRepository.GetAllAttached()
+                .Include(n => n.Category)
+                .FirstOrDefaultAsync(n => n.Id == id);
         }
 
         public async Task<Note> CreateNoteAsync(Note note)
@@ -36,6 +42,8 @@ namespace NotesVaultApp.Service.Data
 
             existingNote.Title = note.Title;
             existingNote.Content = note.Content;
+            existingNote.Category = note.Category;
+            existingNote.UpdatedAt = DateTime.UtcNow.ToString();
 
             await _noteRepository.UpdateAsync(existingNote);
             return true;
