@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using NotesVaultApp.Data.Models;
 using NotesVaultApp.Data.Repository;
 using NotesVaultApp.Data.Repository.Interface;
 
@@ -9,23 +10,32 @@ namespace NotesVaultApp.Web.Infrastucture.Extensions
     {
         public static void RegisterRepositories(this IServiceCollection services, Assembly modelsAssembly)
         {
-            Type repositoryInterfaceType = typeof(IRepository<>);
-            Type repositoryImplementationType = typeof(BaseRepository<>);
-
+            Type[] typesToExclude = new Type[] { typeof(ApplicationUser) };
             Type[] modelTypes = modelsAssembly
                 .GetTypes()
                 .Where(t => !t.IsAbstract && !t.IsInterface &&
-                            !t.IsEnum && t.IsClass)
+                !t.IsEnum &&
+                !t.Name.ToLower().EndsWith("attribute"))
                 .ToArray();
 
-            foreach (Type modelType in modelTypes)
+            foreach (Type type in modelTypes)
             {
-                Type constructedInterface = repositoryInterfaceType.MakeGenericType(modelType);
-                Type constructedImplementation = repositoryImplementationType.MakeGenericType(modelType);
+                if (!typesToExclude.Contains(type))
+                {
+                    // IRepository<T> and BaseRepository<T> both expect just one type parameter
+                    Type repositoryInterface = typeof(IRepository<>);
+                    Type repositoryInstanceType = typeof(BaseRepository<>);
 
-                services.AddScoped(constructedInterface, constructedImplementation);
+                    // Register IRepository<T> with BaseRepository<T> for each model
+                    Type constructedInterface = repositoryInterface.MakeGenericType(type); // IRepository<Note>
+                    Type constructedImplementation = repositoryInstanceType.MakeGenericType(type); // BaseRepository<Note>
+
+                    // Register the service in DI container
+                    services.AddScoped(constructedInterface, constructedImplementation);
+                }
             }
         }
+
         public static void RegisterUserDefinedServices(this IServiceCollection services, Assembly serviceAssembly)
         {
             Type[] serviceInterfaceTypes = serviceAssembly

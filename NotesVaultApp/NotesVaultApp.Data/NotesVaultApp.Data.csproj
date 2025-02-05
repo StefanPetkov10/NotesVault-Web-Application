@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NotesVaultApp.Data.Models\NotesVaultApp.Data.Models.csproj" />
-    <ProjectReference Include="..\NotesVaultApp.Service.Data\NotesVaultApp.Service.Data.csproj" />
   </ItemGroup>
 
 </Project>

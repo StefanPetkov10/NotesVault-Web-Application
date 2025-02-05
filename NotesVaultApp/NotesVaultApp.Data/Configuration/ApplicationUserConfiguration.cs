@@ -2,17 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NotesVaultApp.Data.Models;
-using NotesVaultApp.Service.Data.Interfaces;
 
 namespace NotesVaultApp.Data.Configuration
 {
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        private readonly IAuthService _authService;
-
-        public ApplicationUserConfiguration(IAuthService authService)
+        public ApplicationUserConfiguration()
         {
-            _authService = authService;
         }
 
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
@@ -36,19 +32,17 @@ namespace NotesVaultApp.Data.Configuration
                 HasData(
                 new ApplicationUser
                 {
-                    //add the data here
                     Id = 1,
                     Username = "admin",
                     Email = "stefan08@gmail.com",
-                    PasswordHash = _authService.HashPassword("admin")
+                    PasswordHash = hasher.HashPassword(null, "admin")
                 },
                 new ApplicationUser
                 {
-                    //add the data here
                     Id = 2,
                     Username = "user1",
                     Email = "user1@gmail.com",
-                    PasswordHash = _authService.HashPassword("user1")
+                    PasswordHash = hasher.HashPassword(null, "user1")
                 }
                 );
         }

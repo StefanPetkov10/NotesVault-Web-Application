@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NotesVaultApp.Data.Models\NotesVaultApp.Data.Models.csproj" />
-    <ProjectReference Include="..\NotesVaultApp.Data.Repository\NotesVaultApp.Data.Repository.csproj" />
     <ProjectReference Include="..\NotesVaultApp.Data\NotesVaultApp.Data.csproj" />
   </ItemGroup>
 

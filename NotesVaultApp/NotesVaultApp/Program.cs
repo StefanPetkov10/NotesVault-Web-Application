@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NotesVaultApp.Data;
-using NotesVaultApp.Service.Data;
+using NotesVaultApp.Data.Models;
 using NotesVaultApp.Service.Data.Interfaces;
 using NotesVaultApp.Web.Infrastucture.Extensions;
 
@@ -48,8 +48,14 @@ namespace NotesVaultApp
                 };
             });
 
-            builder.Services.RegisterRepositories(typeof(AuthService).Assembly);
-            builder.Services.RegisterUserDefinedServices(typeof(IAuthService).Assembly);
+            //builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            //builder.Services.AddScoped<ITokenService, TokenService>();
+            //builder.Services.AddScoped<IAuthService, AuthService>();
+            //builder.Services.AddScoped<INoteService, NoteService>();
+
+            //builder.Services.AddScoped<IRepository<Note>, BaseRepository<Note>>();
+            builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
+            builder.Services.RegisterUserDefinedServices(typeof(INoteService).Assembly);
 
             builder.Services.AddAuthorization();
             var app = builder.Build();
