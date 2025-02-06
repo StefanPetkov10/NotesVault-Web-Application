@@ -8,21 +8,18 @@ NotesVault is a web application designed to help users securely store, manage, a
 - **Read Notes**: Users can view their notes in an easy-to-read format, with the ability to filter or search for specific notes.
 - **Update Notes**: Users can edit their existing notes, making it simple to make changes as needed.
 - **Delete Notes**: Users can remove unwanted notes, keeping their workspace organized.
-- **User Authentication**: Secure login and registration process using JWT (JSON Web Token) for token-based authentication.
 - **Responsive Design**: Fully responsive web design to ensure that users can access and manage their notes on any device.
 
 ## Technologies
 
-- **Backend**: ASP.NET Core, Entity Framework Core, JWT Authentication
-- **Frontend**: HTML, CSS, JavaScript (Vanilla or with Framework like React)
+- **Backend**: ASP.NET Core, Entity Framework Core
+- **Frontend**: HTML, CSS, JavaScript
 - **Database**: SQL Server
-- **Authentication**: JWT (JSON Web Token) for secure user authentication
 
 ## Usage
 
-- **Login / Register**: Use the authentication forms to create an account or log in to access your notes securely.
 - **Add Notes**: After logging in, you can start adding your personal notes with the provided form.
-- **Manage Notes**: You can view, edit, and delete notes, and filter them by title or content.
+- **Manage Notes**: You can view, edit, and delete notes.
 
 ## License
 
