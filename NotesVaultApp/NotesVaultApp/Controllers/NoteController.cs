@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using NotesVaultApp.Data.Models;
-using NotesVaultApp.Data.Models.Enums;
-using NotesVaultApp.DTOs;
 using NotesVaultApp.DTOs.Note_DTOs;
 using NotesVaultApp.Service.Data.Interfaces;
 
@@ -13,16 +10,12 @@ namespace NotesVaultApp.Controllers
     public class NoteController : ControllerBase
     {
         private readonly INoteService _noteService;
-        private readonly IMapper _mapper;
         private readonly ILogger<NoteController> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public NoteController(INoteService noteService, IMapper mapper, ILogger<NoteController> logger, IHttpContextAccessor httpContextAccessor)
+        public NoteController(INoteService noteService, IMapper mapper, ILogger<NoteController> logger)
         {
             _noteService = noteService;
-            _mapper = mapper;
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -30,11 +23,11 @@ namespace NotesVaultApp.Controllers
         {
             var notes = await _noteService.GetAllNotesAsync();
 
-            foreach (var note in notes)
-            {
-                Console.WriteLine($"Note ID: {note.Id}, Category: {note.Category?.Name}");
-            }
-            return Ok(_mapper.Map<IEnumerable<NoteDto>>(notes));
+            //foreach (var note in notes)
+            //{
+            //    Console.WriteLine($"Note ID: {note.Id}, Category: {note.Category?.Name}");
+            //}
+            return Ok(notes);
         }
 
         [HttpGet("{id}")]
@@ -47,7 +40,7 @@ namespace NotesVaultApp.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<NoteDto>(note));
+            return Ok(note);
         }
 
 
@@ -59,35 +52,20 @@ namespace NotesVaultApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = Enum.Parse<Categories>(noteDto.Category); // Change Category to Categories
+            var createdNote = await _noteService.CreateNoteAsync(noteDto);
 
-            var note = _mapper.Map<Note>(noteDto);
-            note.CreatedAt = DateTime.UtcNow.ToString();
-
-            note.Category = new Category { Name = category }; // Create a new Category object
-
-            var createdNote = await _noteService.CreateNoteAsync(note);
-
-            return CreatedAtAction(nameof(GetNoteById), new { id = createdNote.Id }, _mapper.Map<NoteDto>(createdNote));
+            return CreatedAtAction(nameof(GetNoteById), new { id = createdNote.Id }, createdNote);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateNote(int id, [FromBody] UpdateNoteDto noteDto)
+        public async Task<IActionResult> UpdateNote(int id, [FromBody] UpdateNoteDto updateNoteDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var note = _mapper.Map<Note>(noteDto);
-            note.UpdatedAt = DateTime.UtcNow.ToString();
-            note.Category = new Category
-            {
-                Name = Enum.Parse<Categories>(noteDto.Category)
-            };
-            note.Id = id;
-
-            var result = await _noteService.UpdateNoteAsync(id, note);
+            var result = await _noteService.UpdateNoteAsync(id, updateNoteDto);
             if (!result)
             {
                 _logger.LogWarning($"Failed to update Note with ID {id}. Not found.");

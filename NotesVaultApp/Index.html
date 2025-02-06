@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Vault</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Notes Vault</h1>
+
+        <!-- Form for creating a new note -->
+        <form id="createNoteForm">
+            <h2>Create New Note</h2>
+            <input type="text" id="title" placeholder="Title" required>
+            <textarea id="content" placeholder="Content" required></textarea>
+            <select id="category" required>
+                <option value="Work">Personal</option>
+                <option value="Personal">Work</option>
+                <option value="Study">General</option>
+            </select>
+            <button type="submit">Create Note</button>
+            <button type="button" id="showAllNotes">All Notes</button>
+            <button id="hideNotes">Back</button>
+        </form>
+
+        <!-- List of notes -->
+        <div id="notesList">
+            <h2>Notes</h2>
+            <ul id="notes"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

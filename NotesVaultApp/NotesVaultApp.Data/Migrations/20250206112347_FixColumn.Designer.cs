@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NotesVaultApp.Data;
 
@@ -11,9 +12,11 @@ using NotesVaultApp.Data;
 namespace NotesVaultApp.Data.Migrations
 {
     [DbContext(typeof(NotesVaultDbContext))]
-    partial class NotesVaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250206112347_FixColumn")]
+    partial class FixColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

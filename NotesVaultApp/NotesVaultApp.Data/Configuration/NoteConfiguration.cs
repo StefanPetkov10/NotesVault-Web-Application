@@ -31,8 +31,8 @@ namespace NotesVaultApp.Data.Configuration
                         Id = 1,
                         Title = "First Note",
                         Content = "This is the content of the first note",
-                        CreatedAt = "04-02-2025",
-                        UpdatedAt = "05-02-2025",
+                        CreatedAt = DateTime.Today.AddDays(-1),
+                        UpdatedAt = DateTime.Today.AddDays(1),
                         CategoryId = 1,
                     },
                     new Note
@@ -40,7 +40,7 @@ namespace NotesVaultApp.Data.Configuration
                         Id = 2,
                         Title = "Second Note",
                         Content = "This is the content of the second note",
-                        CreatedAt = "05-02-2025",
+                        CreatedAt = DateTime.Today,
                         CategoryId = 2,
                     },
                     new Note
@@ -48,7 +48,7 @@ namespace NotesVaultApp.Data.Configuration
                         Id = 3,
                         Title = "Third Note",
                         Content = "This is the content of the third note",
-                        CreatedAt = "06-02-2025",
+                        CreatedAt = DateTime.Today.AddDays(2),
                         CategoryId = 3,
                     }
                 );
