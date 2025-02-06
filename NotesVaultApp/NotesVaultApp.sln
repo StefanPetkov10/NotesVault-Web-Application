@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesVaultApp.Data", "Notes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesVaultApp.Data.Models", "NotesVaultApp.Data.Models\NotesVaultApp.Data.Models.csproj", "{B9F600C3-707A-4D3E-947C-63F56019233B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesVaultApp.Service.Data", "NotesVaultApp.Service.Data\NotesVaultApp.Service.Data.csproj", "{484AA440-46B3-47CF-AD78-DD29193DC763}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesVaultApp.Services", "NotesVaultApp.Service.Data\NotesVaultApp.Services.csproj", "{484AA440-46B3-47CF-AD78-DD29193DC763}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{01F1B9EF-3505-4577-92A7-1C820A7149E7}"
 EndProject

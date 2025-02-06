@@ -6,10 +6,10 @@ namespace NotesVaultApp.Data.Repository.Interface
     {
         IQueryable<T> GetAllAttached();
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(Guid id);
         Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(int id);
+        Task<bool> UpdateAsync(T entity);
+        Task DeleteAsync(Guid id);
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
     }
 }

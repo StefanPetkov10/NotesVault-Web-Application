@@ -19,15 +19,12 @@ namespace NotesVaultApp.Web.Infrastucture.Extensions
             foreach (Type type in modelTypes)
             {
 
-                // IRepository<T> and BaseRepository<T> both expect just one type parameter
                 Type repositoryInterface = typeof(IRepository<>);
                 Type repositoryInstanceType = typeof(BaseRepository<>);
 
-                // Register IRepository<T> with BaseRepository<T> for each model
                 Type constructedInterface = repositoryInterface.MakeGenericType(type); // IRepository<Note>
                 Type constructedImplementation = repositoryInstanceType.MakeGenericType(type); // BaseRepository<Note>
 
-                // Register the service in DI container
                 services.AddScoped(constructedInterface, constructedImplementation);
 
             }

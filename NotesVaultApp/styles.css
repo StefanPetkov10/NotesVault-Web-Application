@@ -75,7 +75,7 @@ li {
 
 #showAllNotes {
     background-color: #007bff;
-    margin-left: 10px; /* Добавяме малко разстояние между бутоните */
+    margin-left: 10px; 
 }
 
 #showAllNotes:hover {

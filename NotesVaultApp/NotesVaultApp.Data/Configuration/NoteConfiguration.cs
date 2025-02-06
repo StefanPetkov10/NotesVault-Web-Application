@@ -6,6 +6,13 @@ namespace NotesVaultApp.Data.Configuration
 {
     public class NoteConfiguration : IEntityTypeConfiguration<Note>
     {
+        private readonly SeedData _seedData;
+
+        public NoteConfiguration(SeedData seedData)
+        {
+            _seedData = seedData;
+        }
+
         public void Configure(EntityTypeBuilder<Note> builder)
         {
             builder.HasKey(n => n.Id);
@@ -24,34 +31,9 @@ namespace NotesVaultApp.Data.Configuration
 
 
             builder
-                .HasData
-                (
-                    new Note
-                    {
-                        Id = 1,
-                        Title = "First Note",
-                        Content = "This is the content of the first note",
-                        CreatedAt = DateTime.Today.AddDays(-1),
-                        UpdatedAt = DateTime.Today.AddDays(1),
-                        CategoryId = 1,
-                    },
-                    new Note
-                    {
-                        Id = 2,
-                        Title = "Second Note",
-                        Content = "This is the content of the second note",
-                        CreatedAt = DateTime.Today,
-                        CategoryId = 2,
-                    },
-                    new Note
-                    {
-                        Id = 3,
-                        Title = "Third Note",
-                        Content = "This is the content of the third note",
-                        CreatedAt = DateTime.Today.AddDays(2),
-                        CategoryId = 3,
-                    }
-                );
+                .HasData(_seedData.Note1,
+                        _seedData.Note2);
+
         }
     }
 }

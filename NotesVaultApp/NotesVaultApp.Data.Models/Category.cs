@@ -6,10 +6,11 @@ namespace NotesVaultApp.Data.Models
     {
         public Category()
         {
+            this.Id = Guid.NewGuid();
             Notes = new List<Note>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Categories Name { get; set; }
         public List<Note> Notes { get; set; }
     }

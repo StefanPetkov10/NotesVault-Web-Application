@@ -21,19 +21,15 @@ namespace NotesVaultApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllNotes()
         {
-            var notes = await _noteService.GetAllNotesAsync();
+            var notes = await _noteService.GetAllAsync();
 
-            //foreach (var note in notes)
-            //{
-            //    Console.WriteLine($"Note ID: {note.Id}, Category: {note.Category?.Name}");
-            //}
             return Ok(notes);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetNoteById(int id)
+        public async Task<IActionResult> GetNoteById(Guid id)
         {
-            var note = await _noteService.GetNoteByIdAsync(id);
+            var note = await _noteService.GetByIdAsync(id);
             if (note == null)
             {
                 _logger.LogWarning($"Note with ID {id} not found.");
@@ -52,20 +48,20 @@ namespace NotesVaultApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var createdNote = await _noteService.CreateNoteAsync(noteDto);
+            var createdNote = await _noteService.CreateAsync(noteDto);
 
             return CreatedAtAction(nameof(GetNoteById), new { id = createdNote.Id }, createdNote);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateNote(int id, [FromBody] UpdateNoteDto updateNoteDto)
+        public async Task<IActionResult> UpdateNote(Guid id, [FromBody] UpdateNoteDto updateNoteDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _noteService.UpdateNoteAsync(id, updateNoteDto);
+            var result = await _noteService.UpdateAsync(id, updateNoteDto);
             if (!result)
             {
                 _logger.LogWarning($"Failed to update Note with ID {id}. Not found.");
@@ -76,16 +72,16 @@ namespace NotesVaultApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNote(int id)
+        public async Task<IActionResult> DeleteNote(Guid id)
         {
-            var note = await _noteService.GetNoteByIdAsync(id);
+            var note = await _noteService.GetByIdAsync(id);
             if (note == null)
             {
                 _logger.LogWarning($"Attempted to delete Note with ID {id}, but it was not found.");
                 return NotFound();
             }
 
-            await _noteService.DeleteNoteAsync(id);
+            await _noteService.DeleteAsync(id);
             return NoContent();
         }
     }

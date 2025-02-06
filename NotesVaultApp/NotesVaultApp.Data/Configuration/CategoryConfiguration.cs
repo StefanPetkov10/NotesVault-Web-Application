@@ -1,14 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NotesVaultApp.Data.Models;
-using NotesVaultApp.Data.Models.Enums;
 
 namespace NotesVaultApp.Data.Configuration
 {
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
+        private readonly SeedData _seedData;
+
+        public CategoryConfiguration(SeedData seedData)
+        {
+            _seedData = seedData;
+        }
+
         public void Configure(EntityTypeBuilder<Category> builder)
         {
+
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Name)
@@ -21,23 +28,8 @@ namespace NotesVaultApp.Data.Configuration
                 .HasForeignKey(n => n.CategoryId);
 
             builder
-                .HasData(
-                    new Category
-                    {
-                        Id = 1,
-                        Name = Categories.Personal
-                    },
-                    new Category
-                    {
-                        Id = 2,
-                        Name = Categories.Work
-                    },
-                    new Category
-                    {
-                        Id = 3,
-                        Name = Categories.General
-                    }
-                );
+                .HasData(_seedData.Category1,
+                        _seedData.Category2);
         }
     }
 }

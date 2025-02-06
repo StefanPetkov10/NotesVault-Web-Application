@@ -20,7 +20,7 @@ namespace NotesVaultApp.Service.Data
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NoteDto>> GetAllNotesAsync()
+        public async Task<IEnumerable<NoteDto>> GetAllAsync()
         {
             var notes = await _noteRepository.GetAllAttached()
                 .Include(n => n.Category)
@@ -37,7 +37,7 @@ namespace NotesVaultApp.Service.Data
             return notesToMap;
         }
 
-        public async Task<NoteDto?> GetNoteByIdAsync(int id)
+        public async Task<NoteDto?> GetByIdAsync(Guid id)
         {
             //return await _noteRepository.GetByIdAsync(id);
             var note = await _noteRepository.GetAllAttached()
@@ -51,7 +51,7 @@ namespace NotesVaultApp.Service.Data
             return noteToMap;
         }
 
-        public async Task<NoteDto> CreateNoteAsync(CreateNoteDto createNoteDto)
+        public async Task<NoteDto> CreateAsync(CreateNoteDto createNoteDto)
         {
             var newNote = _mapper.Map<Note>(createNoteDto);
             newNote.CreatedAt = DateTime.UtcNow;
@@ -64,21 +64,20 @@ namespace NotesVaultApp.Service.Data
             return _mapper.Map<NoteDto>(newNote);
         }
 
-        public async Task<bool> UpdateNoteAsync(int id, UpdateNoteDto updateNoteDto)
+        public async Task<bool> UpdateAsync(Guid id, UpdateNoteDto updateNoteDto)
         {
             var existingNote = await _noteRepository.GetByIdAsync(id);
             if (existingNote == null) return false;
 
-
             _mapper.Map(updateNoteDto, existingNote);
-            existingNote.Category = new Category { Name = Enum.Parse<Categories>(updateNoteDto.Category) };
+            existingNote.Category.Name = Enum.Parse<Categories>(updateNoteDto.Category);
             existingNote.UpdatedAt = DateTime.UtcNow;
 
             await _noteRepository.UpdateAsync(existingNote);
             return true;
         }
 
-        public async Task<bool> DeleteNoteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var existingNote = await _noteRepository.GetByIdAsync(id);
             if (existingNote == null) return false;

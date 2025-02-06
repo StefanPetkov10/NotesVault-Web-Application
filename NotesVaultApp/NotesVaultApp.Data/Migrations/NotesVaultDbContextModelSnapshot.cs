@@ -24,11 +24,9 @@ namespace NotesVaultApp.Data.Migrations
 
             modelBuilder.Entity("NotesVaultApp.Data.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Name")
                         .HasMaxLength(50)
@@ -41,31 +39,24 @@ namespace NotesVaultApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("8dbc8abe-dac4-4203-ac82-6b70eaa95ab7"),
                             Name = 1
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("6412b356-57b0-4952-bc46-34920e67c73a"),
                             Name = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = 3
                         });
                 });
 
             modelBuilder.Entity("NotesVaultApp.Data.Models.Note", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -91,8 +82,8 @@ namespace NotesVaultApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            CategoryId = 1,
+                            Id = new Guid("6c1017d7-631b-471a-b6b6-21a83ca07ff9"),
+                            CategoryId = new Guid("8dbc8abe-dac4-4203-ac82-6b70eaa95ab7"),
                             Content = "This is the content of the first note",
                             CreatedAt = new DateTime(2025, 2, 5, 0, 0, 0, 0, DateTimeKind.Local),
                             Title = "First Note",
@@ -100,19 +91,11 @@ namespace NotesVaultApp.Data.Migrations
                         },
                         new
                         {
-                            Id = 2,
-                            CategoryId = 2,
+                            Id = new Guid("7639f555-2f90-44b0-9a2b-408c397f410c"),
+                            CategoryId = new Guid("6412b356-57b0-4952-bc46-34920e67c73a"),
                             Content = "This is the content of the second note",
                             CreatedAt = new DateTime(2025, 2, 6, 0, 0, 0, 0, DateTimeKind.Local),
                             Title = "Second Note"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 3,
-                            Content = "This is the content of the third note",
-                            CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            Title = "Third Note"
                         });
                 });
 

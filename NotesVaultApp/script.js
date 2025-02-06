@@ -23,8 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><small>Created on: ${note.createdAt}</small></p>
                 <p><small>Updated on: ${note.updatedAt}</small></p>
                 <div class="note-actions">
-                    <button onclick="editNote(${note.id})">Edit</button>
-                    <button class="delete" onclick="deleteNote(${note.id})">Delete</button>
+                    <button onclick="editNote('${note.id}')">Edit</button>
+                    <button class="delete" onclick="deleteNote('${note.id}')">Delete</button>
+
                 </div>
             `;
             notesList.appendChild(li);
@@ -35,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showAllNotesButton.style.display = "none";
     }
 
-    // Create a new note
     createNoteForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('title').value;
@@ -57,20 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (response.ok) {
-            fetchNotes(); // Refresh the notes list
+            fetchNotes();
             createNoteForm.reset();
         }
     });
 
     if (showAllNotesButton) {
         showAllNotesButton.addEventListener('click', () => {
-            fetchNotes(); 
+            fetchNotes();
         });
     }
 
     hideNotesButton.addEventListener('click', () => {
         notesList.style.display = "none";
-        hideNotesButton.style.display = "none"; 
+        hideNotesButton.style.display = "none";
         showAllNotesButton.style.display = "inline-block";
     });
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 category
             };
 
-            const response = await fetch(`${API_BASE_URL}/Note/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/Note/${encodeURIComponent(id)}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.deleteNote = async (id) => {
         if (confirm('Are you sure you want to delete this note?')) {
-            const response = await fetch(`${API_BASE_URL}/Note/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/Note/${encodeURIComponent(id)}`, {
                 method: 'DELETE'
             });
 
